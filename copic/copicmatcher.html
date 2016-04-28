@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" href="js/tageditor/jquery.tag-editor.css">
+<link rel="stylesheet" href="js/kindeditor/themes/default/default.css" />
+
+<title>Copic Color Matcher/Recipe Builder</title>
+
+<script type="text/javascript" src="js/kindeditor/kindeditor-all-min.js"></script>
+<script type="text/javascript"
+	src="js/kindeditor/plugins/code/prettify.js"></script>
+<script type="text/javascript" src="js/copic_recipe.js"></script>
+<script type="text/javascript" src="js/copic_cat.js"></script>
+<script type="text/javascript" src="js/copic_matchalg.js"></script>
+<script type="text/javascript" src="js/copic_pres.js"></script>
+<script type="text/javascript" src="js/copic_pres_builder.js"></script>
+<script type="text/javascript" src="js/copic_pres_fave.js"></script>
+<script type="text/javascript" src="js/copic_pres_cat.js"></script>
+<script type="text/javascript" src="js/copic_pres_admin.js"></script>
+<script type="text/javascript" src="js/fuse/fuse.min.js"></script>
+<script type="text/javascript" src="js/tageditor/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="js/tageditor/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/tageditor/jquery.caret.min.js"></script>
+<script type="text/javascript" src="js/tageditor/jquery.tag-editor.js"></script>
+</head>
+<body onload="pres_initApp();" background="yellowbg.jpg">
+	<h1>Copic Color Matcher/Recipe Builder</h1>
+	<div
+		style="background-color: black; padding-top: 1pt; padding-bottom: 1pt; padding-right: 5pt; padding-left: 5pt">
+
+		<div style="background-color: #D3D3D3">
+			<div id="builderDiv">
+				<h2>Match/Build Recipes</h2>
+				See also <input type="button" value="Recipes"
+					onclick="pres_tabTo('faveDiv');" /> <input
+					type="button" value="Catalog" onclick="pres_tabTo('catDiv');" /> <input
+					type="button" value="Share With Friends"
+					onclick="pres_tabTo('adminDiv');" />
+				<p>In this tab you build Copic recipes. To find good colors for
+					your recipe, enter a Copic color code and click "Search" to find
+					Copic markers whose color is similar. You can check boxes to
+					include in the search results markers of the same family (e.g., B14
+					is in the same family as B12) or to exclude from the search markers
+					you don't own. Each marker in the results has a score, which
+					measures how similar its color is to the color you are searching
+					on; the lower the score, the closer the match. If you think a
+					marker shown in the results is a poor match for the marker you are
+					searching on, check "Bad match" to exclude that combination of
+					markers from future searches.
+				<p>Drag colors you think are suitable from the search results to
+					the recipe builder. In the builder can you rearrange the colors by
+					dragging them left or right. Give your recipe a name, enter a list
+					of tags (separated by comma), and click "Add To Favorites" to save
+					the recipe. Your recipe will then be available in the Recipes tab.
+				
+				<div id="searchDiv">
+					<h3>Search for Marker Matches</h3>
+					<label for="copicSourceText">Color:<input type="text"
+						size="6" maxlength="6" id="copicSourceText" /></label> <label
+						for="numMathcesText"># Matches <input type="text" size="3"
+						maxlength="3" id="numMatchesText" value="10" /></label>
+					<p>
+						<label for="incFamilyCheck">Include family members in
+							search <input type="checkbox" checked id="incFamilyCheck"
+							onclick="presb_copicSearch();" />
+						</label> <label for="excNoInv">Exclude markers I don't have from
+							search <input type="checkbox" id="excNoInv"
+							onclick="presb_copicSearch();" />
+						</label> <label for="showExclusionCheck">Show results for markers
+							I consider bad match <input type="checkbox"
+							id="showExclusionCheck" onclick="presb_copicSearch();" />
+						</label>
+					<p>
+						<input type='hidden' id="copicAlgSelect" value="cie" /> <input
+							type="button" value="Search" onclick="presb_copicSearch();" />
+				</div>
+				<h3>Matches</h3>
+				<span id="noMatch">None</span>
+				<table border='1' id="matchedSourceTable">
+					<tr>
+						<td></td>
+					</tr>
+				</table>
+				<table border='1' id="matchResultsTable">
+				</table>
+				<div id="recipeDiv">
+					<h3>Recipe Builder</h3>
+					<table border='1' id="recipeTable">
+						<tr>
+							<td id="recipeDropSign" ondrop="presb_dropColorToRecipe(event)"
+								ondragover="presb_allowDrop(event)"><p>
+								<p>Drag in a matched color here.</td>
+						</tr>
+					</table>
+					<p>
+						Recipe Name: <input type="text" size="20" maxlength="20"
+							id="recipeNameText" />
+					<p>
+						Tags (use comma to separate):
+						<textarea rows="1" cols="40" id="recipeTagsText"></textarea>
+
+						<input type="button" value="Add To Favorites"
+							onclick="presb_commitRecipe();" /> <input type="button"
+							value="Clear" onclick="presb_clearRecipe(null);" />
+				</div>
+			</div>
+
+			<div id="faveDiv">
+				<h2>Favorite Recipes</h2>
+				See also <input type="button" value="Match/Build"
+					onclick="pres_tabTo('builderDiv');" /> <input
+					type="button" value="Catalog" onclick="pres_tabTo('catDiv');" /> <input
+					type="button" value="Share With Friends"
+					onclick="pres_tabTo('adminDiv');" />
+				<p>Here is a list of recipes that you built in the Match/Builder
+					tab. You can view the details of each recipe, remove the recipe (by
+					clicking the "Remove" button), edit the recipe (by clicking on the
+					"Edit" button, which will take you to the Match/Build tab), change
+					the recipe's tags (to see them check the "Show Tags" box), and
+					view/print the list of markers and refills that you don't currently
+					own but are needed for your recipes. Use the search bar to filter
+					your recipes; you will see recipes whose name or tags is similar to
+					the search text you entered.
+				<p>
+					<span id="noFave">None. Import recipes or build a new one in
+						the builder tab.</span>
+				<div id="faveTableDiv">
+					<p>
+						Filter:<input type="text" maxlength="50" size="25"
+							id="faveFilterText" onkeyup="presf_filterFaves();"
+							onchange="presf_filterFaves();" /> <label for="showFaveInvCheck">Show
+							Marker/Refill Check<input type="checkbox" id="showFaveInvCheck"
+							onclick="init_faveDiv();" />
+						</label><label for="showFaveTagsCheck">Show Tags<input
+							type="checkbox" id="showFaveTagsCheck" onclick="init_faveDiv();" />
+						</label>
+					<table border='1' id="faveTable">
+						<tr>
+							<th>Name</th>
+							<th>Tags (use comma to separate)</th>
+							<th>Colors</th>
+							<th>&nbsp;</th>
+						</tr>
+					</table>
+					<table id="orderMarkerTable">
+						<caption
+							style="font-size: 150%; font-style: bold; text-align: left;">Order
+							these markers</caption>
+					</table>
+					<table id="orderRefillTable">
+						<caption
+							style="font-size: 150%; font-style: bold; text-align: left;">Order
+							these refills</caption>
+					</table>
+					<p>
+						<input type="button" value="Print Order List"
+							onclick="window.open('copicorder.html');" />
+				</div>
+			</div>
+
+			<div id="catDiv">
+				<h2>Catalog</h2>
+				See also <input type="button" value="Match/Build"
+					onclick="pres_tabTo('builderDiv');" /> <input type="button"
+					value="Recipes" onclick="pres_tabTo('faveDiv');" /> <input
+					type="button" value="Share With Friends"
+					onclick="pres_tabTo('adminDiv');" />
+				<p>Here is the complete Copic set of colors. Click/unclick the
+					checkboxes to indicate whether you own/don't own the marker or
+					refill for each color.
+				<table border="1" id="catTable" style="width: 100%; height: 100%">
+				</table>
+				<div id="catFlyoutDiv"
+					style="overflow: auto; display: none; position: absolute; background-color: white; border-style: solid; border-color: black">
+				</div>
+			</div>
+			<div id="adminDiv">
+				<h2>Share With Friends</h2>
+				See also <input type="button" value="Match/Build"
+					onclick="pres_tabTo('builderDiv');" /> <input type="button"
+					value="Recipes" onclick="pres_tabTo('faveDiv');" /> <input
+					type="button" value="Catalog" onclick="pres_tabTo('catDiv');" />
+				<p>Your settings (including recipes and inventory of
+					markers you own) are saved in your browser. You can share them with
+					your friends. To send your settings to a friend, click on "Export",
+					copy the contents of the settings displayed in this tab, and paste
+					them into the body of an email addressed to you friend. Your friend
+					can then copy the contents of the email, paste it onto this tab and
+					click "Import".
+				<p>
+					<input type='button' value='Delete All My Settings!!'
+						onclick='presa_deleteAll();' /> <input type='button'
+						value='Import' onclick='presa_importAll();' /> <input
+						type='button' value='Export' onclick='presa_exportAll();' />
+				<p>
+					<textarea id="dumpText" rows='20' cols='200'></textarea>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
