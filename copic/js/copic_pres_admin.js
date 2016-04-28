@@ -12,7 +12,7 @@ function presa_loadAll() {
 			var obj = JSON.parse(localStorage[name]);
 			if (cpx_loadXCat(name, obj) == false) {
 				if (cpr_loadRecipe(name, obj) == false) {
-					cpp_loadPage(name, obj);
+					//cpp_loadPage(name, obj);
 				}
 			}
 		} catch (e) {
@@ -25,11 +25,10 @@ function presa_loadAll() {
 function presa_deleteAll() {
 	cpx_clearAllXCat();
 	cpr_clearAllRecipes();
-	cpp_clearAllPages();
 	for (name in localStorage) {
 		if (cpx_deleteXCat(name) == false) {
 			if (cpr_deleteRecipe(name) == false) {
-				cpp_deletePage(name);
+				//cpp_deletePage(name);
 			}
 		}
 	}
@@ -49,7 +48,7 @@ function presa_importAll() {
 			var obj = JSON.parse(thisLine);
 			if (cpx_importXCat(obj) == false) {
 				if (cpr_importRecipe(obj) == false) {
-					cpp_importPage(obj);
+					//cpp_importPage(obj);
 				}
 			}
 		} catch (e) {
@@ -68,7 +67,7 @@ function presa_exportAll() {
 			obj = cpx_exportXCat(item);
 		}
 		if (obj == null) {
-			obj = cpp_exportPage(item);
+			//obj = cpp_exportPage(item);
 		}
 		if (obj != null) {
 			text += JSON.stringify(obj) + "\n";
