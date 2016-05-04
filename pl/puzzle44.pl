@@ -1,13 +1,6 @@
-% This code is old. 
-% Version 1.0 of this code will be available on May 5. 
-
 heartStrings44Match(S) :-
 	% the solution set; a list of (person,music)
 	S=[[Ha,M1],[Hb,M1],[Hc,M2],[Hd,M2],[He,M3],[Hf,M3],[Hg,M4],[Hh,M4],[Hi,M5],[Hj,M5],[Hk,M6],[Hl,M6],[Hm,M7],[Hn,M7]],
-
-	% Need to set allowed values for music, and also noel is not mentioned in any clues.	
-	permutation([beethoven,chopin,mozart,brahms,debussy,pachelbel,vivaldi], [M1,M2,M3,M4,M5,M6,M7]),
-	member(noel, [Ha,Hb,Hc,Hd,He,Hf,Hg,Hh,Hi,Hj,Hk,Hl,Hm,Hn]),
 	
 	% Clue 1
 	nth0(JordanPos,S,[jordan,JordanMusic]),
@@ -51,7 +44,11 @@ heartStrings44Match(S) :-
 	nth0(RobinPos,S,[robin,_]),
 	permutation([AriPos,BlairPos],[SonOfRobinPos,SonOfChrisPos]),
 	parent(RobinPos,SonOfRobinPos),parent(ChrisPos,SonOfChrisPos), 
-	!.
+	
+	% Need to set allowed values for music, and also noel is not mentioned in any clues.	
+	permutation([beethoven,chopin,mozart,brahms,debussy,pachelbel,vivaldi], [M1,M2,M3,M4,M5,M6,M7]),
+	member(noel, [Ha,Hb,Hc,Hd,He,Hf,Hg,Hh,Hi,Hj,Hk,Hl,Hm,Hn]), 
+	!. % hmmm, if i let it backtrack it finds same answer ad infinitum
 
 % N is female or male			
 female(N):- member(N,[0,2,4,6,8,10,12]).
@@ -62,19 +59,14 @@ parent(0,5). parent(1,5). parent(0,6). parent(1,6). parent(0,8). parent(1,8).
 parent(2,9). parent(3,9). parent(2,10). parent(3,10). parent(2,12). parent(3,12).
 	
 % A and B are siblings
-sibling(A,B):-parent(P,A),parent(P,B), A\==B.
+% It generates each pair TWICE
+sibling(A,B):-parent(P,A),parent(P,B), A\=B.
 
 % A is B's spouse
+% It generates each pair TWICE
 spouse(A,B) :- female(A), succ(A,B).
 spouse(A,B) :- male(A), succ(B,A).
 
-% A is sister in law of B
-% sister in law: my spouse's sister
-sisterInLaw(4,6). sisterInLaw(6,4).
-sisterInLaw(4,8). sisterInLaw(8,4).
-sisterInLaw(7,8). sisterInLaw(8,7).
-sisterInLaw(8,10). sisterInLaw(10,8).
-sisterInLaw(8,12). sisterInLaw(12,8).
-sisterInLaw(11,12). sisterInLaw(12,11).
-%sisterInLaw(Her,Me):- female(Her),spouse(Her,Bro),male(Bro),sibling(Me,Bro).
-%sisterInLaw(Me,Her):- spouse(Her,Me).
+% A and B are sisters in law
+sisterInLaw(A,B):- spouse(A,S),sibling(S,B),female(B).
+sisterInLaw(A,B):- female(A),spouse(A,S),sibling(S,B).
