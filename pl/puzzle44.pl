@@ -47,8 +47,9 @@ heartStrings44Match(S) :-
 	nth0(ChrisPos,S,[chris,ChrisMusic]), member(ChrisMusic, [beethoven,chopin,mozart,vivaldi,debussy,pachelbel]),
 	nth0(RobinPos,S,[robin,_]),
 	permutation([AriPos,BlairPos],[SonOfRobinPos,SonOfChrisPos]),
-	parent(RobinPos,SonOfRobinPos),parent(ChrisPos,SonOfChrisPos).
-		
+	parent(RobinPos,SonOfRobinPos),parent(ChrisPos,SonOfChrisPos), 
+	!.
+			
 female(N):- member(N,[0,2,4,6,8,10,12]).
 male(N):- member(N,[1,3,5,7,9,11,13]).
 	
