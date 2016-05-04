@@ -1,3 +1,6 @@
+% This code is old. 
+% Version 1.0 of this code will be available on May 5. 
+
 heartStrings44Match(S) :-
 	% the solution set; a list of (person,music)
 	S=[[Ha,M1],[Hb,M1],[Hc,M2],[Hd,M2],[He,M3],[Hf,M3],[Hg,M4],[Hh,M4],[Hi,M5],[Hj,M5],[Hk,M6],[Hl,M6],[Hm,M7],[Hn,M7]],
@@ -49,7 +52,8 @@ heartStrings44Match(S) :-
 	permutation([AriPos,BlairPos],[SonOfRobinPos,SonOfChrisPos]),
 	parent(RobinPos,SonOfRobinPos),parent(ChrisPos,SonOfChrisPos), 
 	!.
-			
+
+% N is female or male			
 female(N):- member(N,[0,2,4,6,8,10,12]).
 male(N):- member(N,[1,3,5,7,9,11,13]).
 	
