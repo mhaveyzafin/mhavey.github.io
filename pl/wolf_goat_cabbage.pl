@@ -42,7 +42,8 @@ wgcMove([Left,[man|Right]],[[man|NewLeft],NewRight]) :-
 selectPassengers(Departure,NewDeparture,Arrival,NewArrival) :-
 	member(Object,Departure),
 	delete(Departure,Object,NewDeparture),
-	append(Arrival,[Object],NewArrival).
+	append(Arrival,[Object],NewArrivalUnsorted),
+	sort(NewArrivalUnsorted,NewArrival).
 
 % check a side unattended by the man is safe
 safety(Side) :-
