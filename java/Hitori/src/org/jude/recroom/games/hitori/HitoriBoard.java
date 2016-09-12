@@ -5,8 +5,8 @@ import java.util.List;
 
 /**
  * Represents Hitori board. Each square is a number. Board must be square
- * 
- * 
+ *
+ *
  * @author Tibcouser
  *
  */
@@ -14,7 +14,7 @@ public class HitoriBoard {
 
 	/**
 	 * Represents a move in the solution: state + flip pos
-	 * 
+	 *
 	 * @author Tibcouser
 	 *
 	 */
@@ -133,7 +133,7 @@ public class HitoriBoard {
 	 * If we are not at the goal, flip and 'o' to a 'u', delete duplicates in
 	 * same row/col, and flip the neighbors of each deleted square. From this
 	 * new state, recurisively solve.
-	 * 
+	 *
 	 * @param state
 	 * @param path
 	 * @return
@@ -172,13 +172,13 @@ public class HitoriBoard {
 			}
 		}
 
-		return false; 
+		return false;
 	}
 
 	/**
 	 * Flip the square at idx from o to u or d, and then flip all q's squares to
 	 * u Return false if not possible to do so.
-	 * 
+	 *
 	 * @param state
 	 * @param idx
 	 * @return
@@ -218,7 +218,7 @@ public class HitoriBoard {
 	 * Given the state, flip the square at idx to 'u'. For each duplicate square
 	 * in the same row/col, flip to 'd'. And for each neighbor of that 'd', flip
 	 * to 'q'. If this cannot be done, return false.
-	 * 
+	 *
 	 * @param state
 	 * @param idx
 	 * @return
@@ -264,7 +264,7 @@ public class HitoriBoard {
 
 	/**
 	 * Flip square at specified idx to 'd'. Queue neighbors if necesary
-	 * 
+	 *
 	 * @param state
 	 * @param idx
 	 * @return
@@ -385,7 +385,7 @@ public class HitoriBoard {
 
 	/**
 	 * Prints board state
-	 * 
+	 *
 	 */
 	String nicePrint(StringBuffer state, int flipPos) {
 		String output = "\n";
