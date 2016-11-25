@@ -1,8 +1,31 @@
+<!DOCTYPE html>
 <html>
-<head>
-<title>coming soon</title>
-</head>
-<body>
-coming soon
-</body>
+  <head>
+    <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var jerusalem = {lat: -31.783333, lng: 35.216667};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: jerusalem
+        });
+        var marker = new google.maps.Marker({
+          position: {lat;37.530233, lng: 27.278369},
+          map: map
+        });
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCD_6gUgxcdBn7Egs-tepQWXpNz6ggAmQ8&callback=initMap">
+    </script>
+  </body>
 </html>
